@@ -1,0 +1,47 @@
+﻿@page "/listportfolio"
+@using Assignment2Web.Shared
+@inject HttpClient Http
+
+<PageTitle>List Portfolio</PageTitle>
+<button @onclick=listrecords>List Portfolio</button>
+
+@if (portfolios == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>ImageUrl</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var portfolio in portfolios)
+            {
+                <tr>
+                    <td>@portfolio.Id</td>
+                    <td>@portfolio.Name</td>
+                    <td>@portfolio.Description</td>
+                    <td>@portfolio.ImageUrl</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private portfolioDetails[]? portfolios;
+    private async void listrecords()
+    {
+        portfolios = await Http.GetFromJsonAsync<portfolioDetails[]>("/Portfolio");
+    }
+    /*protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    }*/
+}
